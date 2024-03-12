@@ -1,0 +1,4 @@
+class Config:
+    DEFAULT_SPEED = 20
+    UPDATE_EVERY_IN_MS = 50
+    ACC_DEACC_AMOUNT = 10
