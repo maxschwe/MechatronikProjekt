@@ -5,3 +5,4 @@ class Commands:
     SHOOT = 4
     LASER = 5
     SHOOT_MOTOR_ON = 6
+    MOVE_SERVO = 7

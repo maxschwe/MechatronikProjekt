@@ -13,7 +13,7 @@
 #define PIN_ENCODER_RIGHT 15
 #define PIN_SERVO_RELOAD 16
 
-#define PIN_LED 9
+#define PIN_LED 0
 #define PIN_LASER 10
 #define PIN_FLYWHEELS 11
 
@@ -29,5 +29,6 @@ void ask_for_dart();
 void shoot();
 void activate_laser(int turn_on);
 void activate_shoot_motor(int turn_on);
+void move_servo();
 
 #endif

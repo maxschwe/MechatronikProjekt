@@ -37,6 +37,8 @@ void do_action(char *string)
     } else if (cmd == 6) {
         // shoot motor on
         activate_shoot_motor(params[1]);
+    } else if (cmd == 7) {
+        move_servo();
     } else {
         send_string(usb_con, "Wrong command", '\r');
     }

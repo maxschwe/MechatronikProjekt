@@ -46,6 +46,9 @@ class Gui(CTk):
         self.btn_shoot = CTkButton(self.main_frame, text="Schießen", command=self.btn_shoot_clicked)
         self.btn_shoot.pack(fill=BOTH, expand=1, pady=10)
 
+        self.btn_move_servo = CTkButton(self.main_frame, text="Nachschieben", command=self.btn_move_servo_clicked)
+        self.btn_move_servo.pack(fill=BOTH, expand=1, pady=10)
+
     def btn_ask_for_dart_clicked(self):
         self.client.send_command(Commands.ASK_FOR_DART)
 
@@ -64,6 +67,9 @@ class Gui(CTk):
         else:
             self.btn_shoot_motor.configure(text="Motoren an")
         self.client.send_command(Commands.SHOOT_MOTOR_ON, [int(self.is_shoot_motor_on)])
+
+    def btn_move_servo_clicked(self):
+        self.client.send_command(Commands.MOVE_SERVO)
 
     def btn_shoot_clicked(self):
         self.client.send_command(Commands.SHOOT)

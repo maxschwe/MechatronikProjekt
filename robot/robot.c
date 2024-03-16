@@ -83,3 +83,10 @@ void activate_laser(int turn_on)
 {
     set_output(PIN_LASER, turn_on);
 }
+
+void move_servo()
+{
+    servo_angle(PIN_SERVO_RELOAD, 500);
+    pause(500);
+    servo_angle(PIN_SERVO_RELOAD, 1000);
+}
