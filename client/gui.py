@@ -5,6 +5,12 @@ import keyboard
 from config import Config
 from commands import Commands
 
+from pydualsense import *
+# create dualsense
+dualsense = pydualsense()
+# find device and initialize
+dualsense.init()
+
 set_appearance_mode("dark")
 set_default_color_theme("blue")
 
@@ -81,40 +87,11 @@ class Gui(CTk):
             self.speed.set(max(0, int(self.speed.get()) - Config.ACC_DEACC_AMOUNT))
 
     def handle_key_presses(self):
-        up_pressed = keyboard.is_pressed("up")
-        down_pressed = keyboard.is_pressed("down")
-        left_pressed = keyboard.is_pressed("left")
-        right_pressed = keyboard.is_pressed("right")
-        try:
-            configured_speed = int(self.speed.get())
-        except:
-            configured_speed = Config.DEFAULT_SPEED
-
         speed = 0
-        steering = 0
-        if up_pressed:
-            speed = -configured_speed
-            if left_pressed:
-                steering = 50
-            elif right_pressed:
-                steering = -50
-            else:
-                steering = 0
-        elif down_pressed:
-            speed = configured_speed
-            if left_pressed:
-                steering = 50
-            elif right_pressed:
-                steering = -50
-            else:
-                steering = 0
-        elif left_pressed:
-            speed = configured_speed
-            steering = -100
-        elif right_pressed:
-            speed = configured_speed
-            steering = 100
+        if dualsense.state.L2 > 0.1:
+            speed = -1 * dualsense.state.L2
+        else:
+            speed = dualsense.state.R2
 
-        self.client.send_command(Commands.DRIVE, [speed, steering])
-
-        self.after(Config.UPDATE_EVERY_IN_MS, self.handle_key_presses)
+        self.client.send_command(Commands.DRIVE, [speed, dualsense.state.LX])
+        self.after(Config.UPDATE_EVERY_IN_MS, self.handle_key_presses_dualsense)
