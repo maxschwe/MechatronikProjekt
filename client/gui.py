@@ -87,11 +87,24 @@ class Gui(CTk):
             self.speed.set(max(0, int(self.speed.get()) - Config.ACC_DEACC_AMOUNT))
 
     def handle_key_presses(self):
+        self.is_laser_on = not self.is_laser_on
+        self.is_shoot_motor_on = not self.is_shoot_motor_on
         speed = 0
-        if dualsense.state.L2 > 0.1:
-            speed = -1 * dualsense.state.L2
+        
+        if dualsense.state.R2 > 0.1:
+            speed = -1 * dualsense.state.R2
         else:
-            speed = dualsense.state.R2
-
+            speed = dualsense.state.L2     
+        if dualsense.state.circle:
+            self.client.send_command(Commands.SHOOT)
+        if dualsense.state.triangle:
+            self.client.send_command(Commands.MOVE_SERVO)
+        if dualsense.state.square:
+            self.client.send_command(Commands.SHOOT_MOTOR_ON, [int(self.is_shoot_motor_on)])
+        if dualsense.state.DpadDown:
+            self.client.send_command(Commands.ASK_FOR_DART)
+        if dualsense.state.DpadUp:
+            self.client.send_command(Commands.LASER, [int(self.is_laser_on)])
+            
         self.client.send_command(Commands.DRIVE, [speed, dualsense.state.LX])
         self.after(Config.UPDATE_EVERY_IN_MS, self.handle_key_presses_dualsense)
